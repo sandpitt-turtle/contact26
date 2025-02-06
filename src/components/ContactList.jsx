@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import React, { useState } from "react"; 
 import ContactRow from "./ContactRow";
 
@@ -9,6 +10,23 @@ const dummyContacts = [
 
 export default function ContactList() { 
   const [contacts, setContacts] = useState(dummyContacts);
+
+  useEffect(() => {
+    async function fetchContacts() {
+      try {
+        //FETCH LOGIC
+        const response = await fetch(
+          "https://fsa-jsonplaceholder-69b5c48f1259.herokuapp.com/users"
+        );
+        const result = await response.json();
+        setContacts(result);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchContacts()
+  }, []);
 
   return ( 
     <table>
@@ -24,7 +42,8 @@ export default function ContactList() {
           <th>Phone</th>
         </tr>
         {contacts.map((contact) => {
-          return <ContactRow key={contact.id} contact={contact} />;
+          return <ContactRow key={contact.id} contact={contact} />;  
+          //MAP. Feel like I /really/ should memorize this structure for some reason
         })}
       </tbody>
     </table>
