@@ -7,7 +7,7 @@ import ContactRow from "./ContactRow";
 //   { id: 3, name: "BB-8", phone: "888-888-8888", email: "bb8@droids.com" },
 // ];
 
-export default function ContactList({ setSelectedContactId }) { 
+export default function ContactList({ setSelectedContactId }) {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -20,30 +20,31 @@ export default function ContactList({ setSelectedContactId }) {
         const result = await response.json();
         setContacts(result);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching contacts:", error);
       }
     }
+
     fetchContacts();
   }, []);
 
-  return ( 
+  return (
     <table>
       <thead>
         <tr>
           <th colSpan="3">Contact List</th>
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         <tr>
           <th>Name</th>
           <th>Email</th>
           <th>Phone</th>
         </tr>
-        {contacts.map((contact) => {
-          return <ContactRow key={contact.id} contact={contact} />;  
-          //MAP. Feel like I /really/ should memorize this structure for some reason
-        })}
+        {contacts.map((contact) => (
+          <ContactRow key={contact.id} contact={contact} setSelectedContactId={setSelectedContactId} />
+        ))}
       </tbody>
     </table>
-  ); 
+  );
+
 }
